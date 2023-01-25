@@ -1,7 +1,7 @@
 {
-	"name": "@ixjb94/chatgpt-express",
+	"name": "@ixjb94/chatgpt-expressjs",
 	"version": "1.0.0",
-	"description": "Simple Chat GPT with express, without styles. with ability to save the conversation",
+	"description": "Simple Chat GPT with expressjs, without styles. with ability to save the conversation",
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
@@ -9,14 +9,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/ixjb94/chatgpt-express.git"
+		"url": "git+https://github.com/ixjb94/chatgpt-expressjs.git"
 	},
 	"keywords": [
 		"chatgpt",
 		"ai",
 		"openai",
 		"express",
-		"chatgpt-express"
+		"chatgpt-expressjs"
 	],
 	"author": "IX JB",
 	"license": "MIT",
