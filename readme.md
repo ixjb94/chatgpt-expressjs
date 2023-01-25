@@ -11,9 +11,11 @@ And create an API_KEY.
 
 3- npm install
 
-4- npm start
+4- in the index.js, place your API_KEY to the `const API_KEY = ""`
 
-5- go to http://localhost:3000
+5- npm start
+
+6- go to http://localhost:3000
 ```
 
 ## ChatGPT + Express
