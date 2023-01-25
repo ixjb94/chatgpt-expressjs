@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ChatGPT - ixjb94</title>
+
+        <style>
+			.container {
+				margin-left: 2rem;
+			}
+
+			.saveText {
+				margin-bottom: 1rem;
+			}
+
+            button {
+                display: block;
+            }
+
+            #gpt {
+                width: 800px;
+                border: 1px solid;
+                padding: 20px;
+                white-space: break-spaces;
+                height: 450px;
+                overflow-y: auto;
+                display: flex;
+                flex-direction: column-reverse;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+
+            <pre id="gpt"></pre>
+
+            <button class="saveText" onclick="saveTextAsFile()">
+                Save Conversation
+            </button>
+
+            <textarea
+                id="prompt"
+                cols="60"
+                rows="10"
+                placeholder="Please generate 10 numbers..."
+            ></textarea>
+
+            <button id="send" onclick="onSend()">Send</button>
+        </div>
+
+        <script>
+			function saveTextAsFile() {
+                let textToWrite = document.getElementById("gpt").innerHTML
+
+                let textFileAsBlob = new Blob([textToWrite], {
+                    type: "text/plain",
+                })
+                let fileNameToSaveAs = `GPT - ${Date.now()}.txt` //filename.extension
+
+                let downloadLink = document.createElement("a")
+                downloadLink.download = fileNameToSaveAs
+                downloadLink.innerHTML = "Download File"
+
+                if (window.webkitURL != null) {
+                    downloadLink.href =
+                        window.webkitURL.createObjectURL(textFileAsBlob)
+                } else {
+                    downloadLink.href =
+                        window.URL.createObjectURL(textFileAsBlob)
+                    downloadLink.onclick = destroyClickedElement
+                    downloadLink.style.display = "none"
+                    document.body.appendChild(downloadLink)
+                }
+
+                downloadLink.click()
+            }
+
+			async function onSend() {
+				
+				let send   = document.querySelector("#send")
+				let prompt = document.querySelector("#prompt")
+				let gpt	   = document.getElementById("gpt")
+				
+				gpt.append(`\nMe: ${prompt.value}\n`)
+
+				send.setAttribute("disabled", true)
+				send.innerHTML = "Sending..."
+				
+				// Request
+                let req = await fetch("http://localhost:3000/", {
+                    method: "POST",
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						prompt: prompt.value
+					}),
+                })
+
+                let data = await req.text()
+
+				// Write Data to HTML
+				gpt.append(data)
+
+				// Reset
+				prompt.value = ""
+				send.removeAttribute("disabled")
+				send.innerHTML = "Send"
+            }
+
+			// If window reloaded, closed, etc. save the conversation
+			window.addEventListener("beforeunload", (event) => {
+				saveTextAsFile()
+			})
+        </script>
+    </body>
+</html>
