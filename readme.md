@@ -11,7 +11,7 @@ And create an API_KEY.
 
 3- npm install
 
-4- in the index.js, place your API_KEY to the API_KEY = ""
+4- in the index.js, place your API_KEY to the const API_KEY = ""
 
 5- npm start
 
