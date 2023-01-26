@@ -150,9 +150,9 @@
             }
 
 			// If window reloaded, closed, etc. save the conversation
-			// window.addEventListener("beforeunload", (event) => {
-			// 	saveTextAsFile()
-			// })
+			window.addEventListener("beforeunload", (event) => {
+				saveTextAsFile()
+			})
         </script>
     </body>
 </html>
