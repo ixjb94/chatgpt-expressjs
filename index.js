@@ -27,6 +27,8 @@ app.post("/", async (req, res) => {
 	try {
 		const prompt = req.body.prompt
 
+		return res.send("Test Test - " + Math.random())
+
 		const response = await openai.createCompletion({
 			model: "text-davinci-003",
 			prompt,

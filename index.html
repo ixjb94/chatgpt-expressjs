@@ -26,15 +26,24 @@
                 white-space: break-spaces;
                 height: 450px;
                 overflow-y: auto;
-                display: flex;
-                flex-direction: column-reverse;
+                /* display: flex;
+                flex-direction: column-reverse; */
             }
+
+			#gpt div {
+				margin: 0.5rem 0;
+			}
+
+			#gpt div pre {
+				margin: 0;
+			}
         </style>
     </head>
     <body>
         <div class="container">
 
-            <pre id="gpt"></pre>
+			<div id="gpt"></div>
+            <!-- <pre id="gpt"></pre> -->
 
             <button class="saveText" onclick="saveTextAsFile()">
                 Save Conversation
@@ -47,12 +56,75 @@
                 placeholder="Please generate 10 numbers..."
             ></textarea>
 
-            <button id="send" onclick="onSend()">Send</button>
+            <button id="send" onclick="onSend(event)">Send</button>
         </div>
 
         <script>
+			let conversationId = 0
+
+			async function onSend(event) {
+
+				let send   = document.querySelector("#send")
+				let prompt = document.querySelector("#prompt")
+				let gpt	   = document.getElementById("gpt")
+				
+				// Set send to disabled
+				send.setAttribute("disabled", true)
+
+				// Create the conversation div
+				const div = document.createElement("div")
+				div.className = `chat${conversationId}`
+
+				const meElement  = document.createElement("pre")
+				meElement.innerText = `Me: ${prompt.value}`
+				div.appendChild(meElement)
+
+				const gptElement = document.createElement("pre")
+				
+				// Request
+                let req = await fetch("http://localhost:3000/", {
+                    method: "POST",
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						prompt: prompt.value
+					}),
+                })
+                let data = await req.text()
+
+				gptElement.innerText = data
+				div.appendChild(gptElement)
+
+				// Add conversation to div
+				gpt.appendChild(div)
+				
+				gpt.lastChild.scrollIntoView({
+					// behavior: "smooth"
+				})
+
+				// Reset
+				prompt.value = ""
+				send.removeAttribute("disabled")
+				send.innerHTML = "Send"
+
+				conversationId++
+			}
+			
 			function saveTextAsFile() {
-                let textToWrite = document.getElementById("gpt").innerHTML
+                // let textToWrite = document.getElementById("gpt").innerHTML
+
+				let preElements = document.getElementsByTagName("pre")
+				
+				let textToWrite = ""
+
+				for (let index = 0; index < preElements.length; index++) {
+					let preElement = preElements.item(index)
+					
+					let preElementText = preElement.innerText
+
+					textToWrite += `${preElementText}\n`
+				}
 
                 let textFileAsBlob = new Blob([textToWrite], {
                     type: "text/plain",
@@ -77,43 +149,10 @@
                 downloadLink.click()
             }
 
-			async function onSend() {
-				
-				let send   = document.querySelector("#send")
-				let prompt = document.querySelector("#prompt")
-				let gpt	   = document.getElementById("gpt")
-				
-				gpt.append(`\nMe: ${prompt.value}\n`)
-
-				send.setAttribute("disabled", true)
-				send.innerHTML = "Sending..."
-				
-				// Request
-                let req = await fetch("http://localhost:3000/", {
-                    method: "POST",
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						prompt: prompt.value
-					}),
-                })
-
-                let data = await req.text()
-
-				// Write Data to HTML
-				gpt.append(data)
-
-				// Reset
-				prompt.value = ""
-				send.removeAttribute("disabled")
-				send.innerHTML = "Send"
-            }
-
 			// If window reloaded, closed, etc. save the conversation
-			window.addEventListener("beforeunload", (event) => {
-				saveTextAsFile()
-			})
+			// window.addEventListener("beforeunload", (event) => {
+			// 	saveTextAsFile()
+			// })
         </script>
     </body>
 </html>
