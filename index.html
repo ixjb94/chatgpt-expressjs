@@ -30,6 +30,10 @@
 				font-size: 0.9rem;
             }
 
+			pre {
+				white-space: break-spaces;
+			}
+
 			#gpt div {
 				margin: 0.5rem 0;
 			}
@@ -77,6 +81,7 @@
 				
 				// Set send to disabled
 				send.setAttribute("disabled", true)
+				send.innerHTML = "Sending"
 
 				// Create the conversation div
 				const div = document.createElement("div")
@@ -84,7 +89,7 @@
 
 				const meElement  = document.createElement("pre")
 				meElement.className = "meChats"
-				meElement.innerText = `Me: ${prompt.value}`
+				meElement.append(`Me: ${prompt.value}`)
 				div.appendChild(meElement)
 
 				const gptElement = document.createElement("pre")
@@ -101,7 +106,8 @@
                 })
                 let data = await req.text()
 
-				gptElement.innerText = data
+				data = data.trimLeft()
+				gptElement.append(data)
 				gptElement.className = "gptChats"
 				div.appendChild(gptElement)
 
