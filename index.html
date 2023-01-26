@@ -12,7 +12,7 @@
 			}
 
 			.saveText {
-				margin-bottom: 1rem;
+				margin: 1rem 0;
 			}
 
             button {
@@ -26,8 +26,8 @@
                 white-space: break-spaces;
                 height: 450px;
                 overflow-y: auto;
-                /* display: flex;
-                flex-direction: column-reverse; */
+				background-color: #3a3a3a;
+				font-size: 0.9rem;
             }
 
 			#gpt div {
@@ -37,13 +37,20 @@
 			#gpt div pre {
 				margin: 0;
 			}
+
+			.meChats {
+				color: #04d2ed;
+			}
+
+			.gptChats {
+				color: white;
+			}
         </style>
     </head>
     <body>
         <div class="container">
 
 			<div id="gpt"></div>
-            <!-- <pre id="gpt"></pre> -->
 
             <button class="saveText" onclick="saveTextAsFile()">
                 Save Conversation
@@ -76,6 +83,7 @@
 				div.className = `chat${conversationId}`
 
 				const meElement  = document.createElement("pre")
+				meElement.className = "meChats"
 				meElement.innerText = `Me: ${prompt.value}`
 				div.appendChild(meElement)
 
@@ -94,6 +102,7 @@
                 let data = await req.text()
 
 				gptElement.innerText = data
+				gptElement.className = "gptChats"
 				div.appendChild(gptElement)
 
 				// Add conversation to div
