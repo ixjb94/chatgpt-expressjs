@@ -22,4 +22,4 @@ And create an API_KEY.
 Simple chatGPT playground with expressjs
 
 ## Images
-![types](https://raw.githubusercontent.com/ixjb94/chatgpt-expressjs/master/images/gpt.png "chatgpt playground")
+![types](https://raw.githubusercontent.com/ixjb94/chatgpt-expressjs/master/images/gpt1.png "chatgpt playground")

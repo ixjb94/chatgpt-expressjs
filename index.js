@@ -2,9 +2,9 @@ const path = require("path")
 const express = require("express")
 const bodyParser = require("body-parser")
 const { Configuration, OpenAIApi } = require("openai")
-const { API_KEY } = require("./config")
+// const { API_KEY } = require("./config")
 
-// const API_KEY = "MY API KEY HERE"
+const API_KEY = "MY API KEY HERE"
 
 // ####### OpenAI
 const configuration = new Configuration({
